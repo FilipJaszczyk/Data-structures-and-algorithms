@@ -85,3 +85,14 @@ func fibbonaciLimitTimeoutContext(ctx context.Context, limit int) []int {
 		return []int{}
 	}
 }
+
+// Recursive fibbonaci, return nth fibonacci number
+func fibbonaciRecursive(num int) int {
+	if num == 0 {
+		return 0
+	} else if num == 1 {
+		return 1
+	} else {
+		return fibbonaciRecursive(num-1) + fibbonaciRecursive(num-2)
+	}
+}

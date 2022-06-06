@@ -20,6 +20,12 @@ type fibTimeoutTest struct {
 	want    []int
 }
 
+type fibRecursiveTest struct {
+	n       int
+	fibFunc func(num int) int
+	want    int
+}
+
 func TestFibonacciNums(t *testing.T) {
 	tests := []fibTest{
 		{
@@ -87,5 +93,18 @@ func TestFibonacciCtxNoTimeout(t *testing.T) {
 	defer cancel()
 	if res := fibbonaciLimitTimeoutContext(ctx, 10); len(res) != 7 {
 		t.Fatalf("expected empty list, got: %#v", res)
+	}
+}
+
+func TestRecursiveFibonacci(t *testing.T) {
+	tests := []fibRecursiveTest{
+		{0, fibbonaciRecursive, 0},
+		{1, fibbonaciRecursive, 1},
+		{5, fibbonaciRecursive, 5},
+	}
+	for _, tc := range tests {
+		if res := tc.fibFunc(tc.n); tc.want != res {
+			t.Fatalf("expected: %v list, got: %v", tc.want, res)
+		}
 	}
 }
