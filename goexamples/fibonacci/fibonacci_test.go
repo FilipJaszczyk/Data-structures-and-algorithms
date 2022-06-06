@@ -1,6 +1,7 @@
 package fibonacci
 
 import (
+	"context"
 	"reflect"
 	"testing"
 	"time"
@@ -70,5 +71,21 @@ func TestFibonacciLimitTimeout(t *testing.T) {
 		if res := tc.fibFunc(tc.n, tc.timeout); !reflect.DeepEqual(res, tc.want) {
 			t.Fatalf("expected empty list, got: %#v", res)
 		}
+	}
+}
+
+func TestFibonacciCtxTimeout(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Nanosecond*2)
+	defer cancel()
+	if res := fibbonaciLimitTimeoutContext(ctx, 10); !reflect.DeepEqual(res, []int{}) {
+		t.Fatalf("expected empty list, got: %#v", res)
+	}
+}
+
+func TestFibonacciCtxNoTimeout(t *testing.T) {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*1)
+	defer cancel()
+	if res := fibbonaciLimitTimeoutContext(ctx, 10); len(res) != 7 {
+		t.Fatalf("expected empty list, got: %#v", res)
 	}
 }
